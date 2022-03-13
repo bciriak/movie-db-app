@@ -1,10 +1,18 @@
+import { useDispatch } from 'react-redux'
 import { Card, Col, Image, List, Row } from 'antd'
 import { StarOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
+import { addToFavorites, setDetailMovieID } from '../actions'
 
 const MovieList = ({ movies }) => {
-  const handleAddFavorite = () => {
-    console.log('handle favorite')
+  const dispatch = useDispatch()
+
+  const handleAddFavorite = (movie) => {
+    dispatch(addToFavorites(movie))
+  }
+
+  const handleMovieDetail = (movieID) => {
+    dispatch(setDetailMovieID(movieID))
   }
 
   return (
@@ -15,14 +23,17 @@ const MovieList = ({ movies }) => {
         <List.Item>
           <Card>
             <Row>
-              <Col span={12}>
-                <Image width={150} src={movie.Poster} />
+              <Col md={{ span: 12 }}>
+                <Image src={movie.Poster} />
               </Col>
-              <Col className="movie-details" span={12}>
-                <StarOutlined onClick={handleAddFavorite} />
+              <Col className="movie-details" md={{ span: 12 }}>
+                <StarOutlined onClick={() => handleAddFavorite(movie)} />
                 <div>
                   <small>Title:</small>
-                  <NavLink to="movie">
+                  <NavLink
+                    onClick={() => handleMovieDetail(movie.imdbID)}
+                    to="movie"
+                  >
                     <b>{movie.Title}</b>
                   </NavLink>
                   <small>Release Year:</small>

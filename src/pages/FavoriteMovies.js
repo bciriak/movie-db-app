@@ -1,5 +1,25 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getFavoritesFromStorage } from '../actions'
+import MovieList from '../components/MovieList'
+
 const FavoriteMovies = () => {
-  return <div>Favorite Movies</div>
+  const dispatch = useDispatch()
+  const favoriteMovies = useSelector((state) => state.movieReducer.favorites)
+
+  useEffect(() => {
+    dispatch(getFavoritesFromStorage())
+  }, [])
+
+  return (
+    <>
+      {favoriteMovies && (
+        <div>
+          <MovieList movies={favoriteMovies} />
+        </div>
+      )}
+    </>
+  )
 }
 
 export default FavoriteMovies

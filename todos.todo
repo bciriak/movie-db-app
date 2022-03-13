@@ -1,11 +1,14 @@
-TODO - install basic dependencies /prettier, ant-design, router, redux, saga, axios/
+DONE - install basic dependencies /prettier, ant-design, router, redux, saga, axios/
 DONE - create 3 main pages /search, movie detail, favorite movies/
 DONE - add basic ant design elements to pages and nav
 DONE - search for movies by title
 DONE - render results of searched movies to list of movies
-TODO - show movie detail page after clicking on single movie
-TODO - favorite movie, add it to local storage
+DONE - show movie detail page after clicking on single movie
+DONE - favorite movie, add it to local storage
+TODO - my favorites page
+TODO - pagination to search
 TODO - add 'my rating' to movies
+TODO - refactor index.js /store out/
+TODO - navbar active item styles
 
-TODO - Local storage for favorites
 TODO - tests

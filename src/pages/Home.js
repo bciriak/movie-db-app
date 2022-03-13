@@ -1,21 +1,21 @@
 import { useState } from 'react'
-import omdbAxios from '../utils/axiosConfig'
 import { Col, Input, Row } from 'antd'
 import MovieList from '../components/MovieList'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMovies } from '../actions'
 
 const { Search } = Input
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const [movies, setMovies] = useState([])
+
+  const dispatch = useDispatch()
+  const movies = useSelector((state) => state.movieReducer.all)
 
   const onSearch = async () => {
     setIsLoading(true)
-    const response = await omdbAxios(``, {
-      params: { s: searchValue },
-    })
-    setMovies(response.data.Search)
+    dispatch(getMovies(searchValue))
     setIsLoading(false)
   }
 
@@ -41,7 +41,11 @@ const Home = () => {
         </Col>
       </Row>
       <Row style={{ marginTop: '50px' }}>
-        <Col xs={{ span: 20, offset: 2 }} md={{ span: 16, offset: 4 }}>
+        <Col
+          md={{ span: 22, offset: 1 }}
+          lg={{ span: 18, offset: 3 }}
+          xl={{ span: 14, offset: 5 }}
+        >
           <MovieList movies={movies} />
         </Col>
       </Row>
