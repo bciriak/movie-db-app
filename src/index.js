@@ -7,6 +7,7 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas/rootSaga'
 import reducers from './reducers'
 import 'antd/dist/antd.min.css'
+import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 import App from './App'
 

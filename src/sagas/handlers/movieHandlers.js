@@ -4,6 +4,7 @@ import {
   addMovieToStorage,
   fetchMovie,
   fetchFavoritesFromStorage,
+  removeMovieFromStorage,
 } from '../requests/movieRequests'
 import {
   ADD_TO_FAVORITES_STARTED,
@@ -18,6 +19,9 @@ import {
   GET_FAVORITES_SUCCESS,
   GET_FAVORITES_ERROR,
   GET_FAVORITES_STARTED,
+  REMOVE_FROM_FAVORITES_SUCCESS,
+  REMOVE_FROM_FAVORITES_ERROR,
+  REMOVE_FROM_FAVORITES_STARTED,
 } from '../../actions/types'
 
 function* handleGetMovies({ payload }) {
@@ -35,6 +39,15 @@ function* handleAddMovieToFavorites({ payload }) {
     yield put({ type: ADD_TO_FAVORITES_SUCCESS, payload: payload })
   } catch (e) {
     yield put({ type: ADD_TO_FAVORITES_ERROR, payload: e.message })
+  }
+}
+
+function* handleRemoveMovieFromFavorites({ payload }) {
+  try {
+    yield call(removeMovieFromStorage, payload)
+    yield put({ type: REMOVE_FROM_FAVORITES_SUCCESS, payload: payload })
+  } catch (e) {
+    yield put({ type: REMOVE_FROM_FAVORITES_ERROR, payload: e.message })
   }
 }
 
@@ -59,6 +72,7 @@ function* handleGetFavorites() {
 export function* moviesWatcher() {
   yield takeEvery(GET_MOVIES_REQUESTED, handleGetMovies)
   yield takeEvery(ADD_TO_FAVORITES_STARTED, handleAddMovieToFavorites)
+  yield takeEvery(REMOVE_FROM_FAVORITES_STARTED, handleRemoveMovieFromFavorites)
   yield takeEvery(SET_DETAIL_MOVIE_STARTED, handleSetDetailMovie)
   yield takeEvery(GET_FAVORITES_STARTED, handleGetFavorites)
 }

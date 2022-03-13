@@ -9,13 +9,13 @@ const FavoriteMovies = () => {
 
   useEffect(() => {
     dispatch(getFavoritesFromStorage())
-  }, [])
+  }, [dispatch])
 
   return (
     <>
       {favoriteMovies && (
         <div>
-          <MovieList movies={favoriteMovies} />
+          <MovieList movies={favoriteMovies} favoritesList={true} />
         </div>
       )}
     </>

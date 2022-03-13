@@ -27,6 +27,23 @@ export const addMovieToStorage = (movie) => {
   }
 }
 
+export const removeMovieFromStorage = (movieID) => {
+  let favorites = []
+  try {
+    let localFavorites = JSON.parse(localStorage.getItem('favorites'))
+    if (localFavorites) {
+      favorites = localFavorites.filter(
+        (localMovie) => localMovie.imdbID !== movieID
+      )
+    } else {
+      favorites = []
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const fetchMovie = async (movieID) => {
   try {
     const response = await omdbAxios({

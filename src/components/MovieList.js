@@ -1,17 +1,46 @@
 import { useDispatch } from 'react-redux'
 import { Card, Col, Image, List, Row } from 'antd'
-import { StarOutlined } from '@ant-design/icons'
+import { StarOutlined, StarTwoTone } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
-import { addToFavorites, setDetailMovieID } from '../actions'
+import {
+  addToFavorites,
+  removeFromFavorites,
+  setDetailMovieID,
+  unsetDetailMovie,
+} from '../actions'
+import { toast } from 'react-toastify'
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, favoritesList = false }) => {
   const dispatch = useDispatch()
+
+  const renderToggleFavoriteButton = (movie) => {
+    if (favoritesList) {
+      return <StarTwoTone onClick={() => handleRemoveFavorite(movie)} />
+    } else {
+      return <StarOutlined onClick={() => handleAddFavorite(movie)} />
+    }
+  }
 
   const handleAddFavorite = (movie) => {
     dispatch(addToFavorites(movie))
+    toast.success(
+      <p>
+        <b>{movie.Title}</b> added to favorites!
+      </p>
+    )
+  }
+
+  const handleRemoveFavorite = ({ imdbID, Title }) => {
+    dispatch(removeFromFavorites(imdbID))
+    toast.success(
+      <p>
+        <b>{Title}</b> was removed from favorites!
+      </p>
+    )
   }
 
   const handleMovieDetail = (movieID) => {
+    dispatch(unsetDetailMovie())
     dispatch(setDetailMovieID(movieID))
   }
 
@@ -27,12 +56,13 @@ const MovieList = ({ movies }) => {
                 <Image src={movie.Poster} />
               </Col>
               <Col className="movie-details" md={{ span: 12 }}>
-                <StarOutlined onClick={() => handleAddFavorite(movie)} />
+                {renderToggleFavoriteButton(movie)}
+                {/*<StarOutlined onClick={() => handleAddFavorite(movie)} />*/}
                 <div>
                   <small>Title:</small>
                   <NavLink
                     onClick={() => handleMovieDetail(movie.imdbID)}
-                    to="movie"
+                    to="/movie"
                   >
                     <b>{movie.Title}</b>
                   </NavLink>

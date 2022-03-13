@@ -8,10 +8,14 @@ import {
   GET_MOVIES_ERROR,
   GET_MOVIES_REQUESTED,
   GET_MOVIES_SUCCESS,
+  REMOVE_FROM_FAVORITES_ERROR,
+  REMOVE_FROM_FAVORITES_STARTED,
+  REMOVE_FROM_FAVORITES_SUCCESS,
   SET_DETAIL_MOVIE_ERROR,
   SET_DETAIL_MOVIE_ID,
   SET_DETAIL_MOVIE_STARTED,
   SET_DETAIL_MOVIE_SUCCESS,
+  UNSET_DETAIL_MOVIE,
 } from '../actions/types'
 
 const initialState = {
@@ -39,6 +43,8 @@ const movieReducer = (state = initialState, { payload, type }) => {
       return { ...state, loading: false, movie: payload }
     case SET_DETAIL_MOVIE_ERROR:
       return { ...state, loading: false, error: payload }
+    case UNSET_DETAIL_MOVIE:
+      return { ...state, movie: null }
     case ADD_TO_FAVORITES_STARTED:
       return { ...state, loading: true }
     case ADD_TO_FAVORITES_SUCCESS:
@@ -48,6 +54,19 @@ const movieReducer = (state = initialState, { payload, type }) => {
         favorites: [...state.favorites, payload],
       }
     case ADD_TO_FAVORITES_ERROR:
+      return { ...state, loading: false, error: payload }
+    case REMOVE_FROM_FAVORITES_STARTED:
+      return { ...state, loading: true }
+    case REMOVE_FROM_FAVORITES_SUCCESS:
+      const updatedFavorites = state.favorites.filter((movie) => {
+        return movie.imdbID !== payload
+      })
+      return {
+        ...state,
+        loading: false,
+        favorites: updatedFavorites,
+      }
+    case REMOVE_FROM_FAVORITES_ERROR:
       return { ...state, loading: false, error: payload }
     case GET_FAVORITES_STARTED:
       return { ...state, loading: true }
