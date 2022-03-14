@@ -1,26 +1,25 @@
 import omdbAxios from '../../utils/axiosConfig'
 
-export const fetchMovies = async (searchTerm) => {
+export const fetchMovies = async ({ searchTerm, pageNo }) => {
   try {
     const response = await omdbAxios({
-      params: { s: searchTerm },
+      params: { s: searchTerm, page: pageNo },
     })
+
+    if (response.data.Error) {
+      throw new Error(response.data.Error)
+    }
+
     return response.data.Search
   } catch (e) {
-    console.log(e)
     throw e
   }
 }
 
 export const addMovieToStorage = (movie) => {
-  let favorites = []
   try {
-    let localFavorites = JSON.parse(localStorage.getItem('favorites'))
-    if (!localFavorites) {
-      favorites.push(movie)
-    } else {
-      favorites = [...localFavorites, movie]
-    }
+    let favorites = JSON.parse(localStorage.getItem('favorites'))
+    favorites[movie.imdbID] = movie
     localStorage.setItem('favorites', JSON.stringify(favorites))
   } catch (e) {
     console.log(e)
@@ -28,16 +27,9 @@ export const addMovieToStorage = (movie) => {
 }
 
 export const removeMovieFromStorage = (movieID) => {
-  let favorites = []
   try {
-    let localFavorites = JSON.parse(localStorage.getItem('favorites'))
-    if (localFavorites) {
-      favorites = localFavorites.filter(
-        (localMovie) => localMovie.imdbID !== movieID
-      )
-    } else {
-      favorites = []
-    }
+    let favorites = JSON.parse(localStorage.getItem('favorites'))
+    delete favorites[movieID]
     localStorage.setItem('favorites', JSON.stringify(favorites))
   } catch (e) {
     console.log(e)
@@ -60,7 +52,7 @@ export const fetchFavoritesFromStorage = () => {
   try {
     let localFavorites = JSON.parse(localStorage.getItem('favorites'))
     if (!localFavorites) {
-      return []
+      return {}
     } else {
       return localFavorites
     }

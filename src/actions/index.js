@@ -8,10 +8,10 @@ import {
   UNSET_DETAIL_MOVIE,
 } from './types'
 
-export const getMovies = (searchTerm) => {
+export const getMovies = (searchTerm, pageNo) => {
   return {
     type: GET_MOVIES_REQUESTED,
-    payload: searchTerm,
+    payload: { searchTerm, pageNo },
   }
 }
 

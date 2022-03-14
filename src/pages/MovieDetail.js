@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Col, Image, Row } from 'antd'
 import { setDetailMovie } from '../actions'
+import FavoritesButton from '../components/FavoritesButton'
 
 const MovieDetail = () => {
   const navigate = useNavigate()
@@ -27,6 +28,7 @@ const MovieDetail = () => {
               <Image src={movie.Poster} />
             </Col>
             <Col xs={{ span: 24 }} sm={{ span: 12 }}>
+              <FavoritesButton movie={movie} />
               <div>
                 <small>Title</small>
                 <h2>

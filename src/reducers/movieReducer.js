@@ -32,7 +32,7 @@ const movieReducer = (state = initialState, { payload, type }) => {
     case GET_MOVIES_REQUESTED:
       return { ...state, loading: true }
     case GET_MOVIES_SUCCESS:
-      return { ...state, loading: false, all: payload }
+      return { ...state, loading: false, all: payload, error: null }
     case GET_MOVIES_ERROR:
       return { ...state, loading: false, error: payload }
     case SET_DETAIL_MOVIE_ID:
@@ -40,7 +40,7 @@ const movieReducer = (state = initialState, { payload, type }) => {
     case SET_DETAIL_MOVIE_STARTED:
       return { ...state, loading: true }
     case SET_DETAIL_MOVIE_SUCCESS:
-      return { ...state, loading: false, movie: payload }
+      return { ...state, loading: false, movie: payload, error: null }
     case SET_DETAIL_MOVIE_ERROR:
       return { ...state, loading: false, error: payload }
     case UNSET_DETAIL_MOVIE:
@@ -52,6 +52,7 @@ const movieReducer = (state = initialState, { payload, type }) => {
         ...state,
         loading: false,
         favorites: [...state.favorites, payload],
+        error: null,
       }
     case ADD_TO_FAVORITES_ERROR:
       return { ...state, loading: false, error: payload }
@@ -65,6 +66,7 @@ const movieReducer = (state = initialState, { payload, type }) => {
         ...state,
         loading: false,
         favorites: updatedFavorites,
+        error: null,
       }
     case REMOVE_FROM_FAVORITES_ERROR:
       return { ...state, loading: false, error: payload }

@@ -15,7 +15,7 @@ const FavoriteMovies = () => {
     <>
       {favoriteMovies && (
         <div>
-          <MovieList movies={favoriteMovies} favoritesList={true} />
+          <MovieList movies={favoriteMovies} />
         </div>
       )}
     </>

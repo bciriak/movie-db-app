@@ -62,7 +62,11 @@ function* handleSetDetailMovie({ payload }) {
 
 function* handleGetFavorites() {
   try {
-    const favorites = yield call(fetchFavoritesFromStorage)
+    const localFavorites = yield call(fetchFavoritesFromStorage)
+    let favorites = []
+    for (let key in localFavorites) {
+      favorites.push(localFavorites[key])
+    }
     yield put({ type: GET_FAVORITES_SUCCESS, payload: favorites })
   } catch (e) {
     yield put({ type: GET_FAVORITES_ERROR, payload: e.message })

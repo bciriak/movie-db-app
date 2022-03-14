@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Col, Input, Row } from 'antd'
-import MovieList from '../components/MovieList'
 import { useDispatch, useSelector } from 'react-redux'
+import { Alert, Button, Col, Input, Row } from 'antd'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import MovieList from '../components/MovieList'
 import { getMovies } from '../actions'
 
 const { Search } = Input
@@ -9,13 +10,32 @@ const { Search } = Input
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const dispatch = useDispatch()
   const movies = useSelector((state) => state.movieReducer.all)
+  const error = useSelector((state) => state.movieReducer.error)
 
   const onSearch = async () => {
     setIsLoading(true)
-    dispatch(getMovies(searchValue))
+    setCurrentPage(1)
+    dispatch(getMovies(searchValue, 1))
+    setIsLoading(false)
+  }
+
+  const handlePagination = (direction) => {
+    let page
+    setIsLoading(true)
+    if (direction === 'next') {
+      page = currentPage + 1
+    } else if (direction === 'prev' && currentPage > 1) {
+      page = currentPage - 1
+    } else {
+      page = 1
+    }
+
+    setCurrentPage(page)
+    dispatch(getMovies(searchValue, page))
     setIsLoading(false)
   }
 
@@ -47,6 +67,23 @@ const Home = () => {
           xl={{ span: 14, offset: 5 }}
         >
           <MovieList movies={movies} />
+          {error && <Alert message={error} type="error" />}
+          {movies.length > 0 && (
+            <div className="pagination">
+              <Button
+                type="primary"
+                shape="round"
+                onClick={() => handlePagination('prev')}
+                icon={<LeftOutlined />}
+              />
+              <Button
+                type="primary"
+                shape="round"
+                onClick={() => handlePagination('next')}
+                icon={<RightOutlined />}
+              />
+            </div>
+          )}
         </Col>
       </Row>
     </>
